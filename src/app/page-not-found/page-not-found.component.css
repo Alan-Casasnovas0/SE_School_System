@@ -1,0 +1,15 @@
+h1 {
+  font-size: 2.5rem;
+  color: #ff0000;
+}
+p {
+  font-size: 1.25rem;
+}
+a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+}
+a:hover {
+  text-decoration: underline;
+}
