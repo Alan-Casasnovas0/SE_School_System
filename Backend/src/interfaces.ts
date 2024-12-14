@@ -33,4 +33,13 @@ export interface DemandeInscription {
     specialite: string;
     GPA: number;
   }
-  
+
+  export interface Internship {
+    internship_id: number;
+    id_student: number; // Foreign key
+    company_name: string;
+    start_date: string; // ISO 8601 format (e.g., "2024-04-01")
+    end_date: string; // ISO 8601 format (e.g., "2024-09-01")
+    description: string;
+    status: 'pending' | 'approved' | 'rejected';
+}

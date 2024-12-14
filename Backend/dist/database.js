@@ -20,6 +20,12 @@ exports.getDemandesInscription = getDemandesInscription;
 exports.getDemandeInscriptionById = getDemandeInscriptionById;
 exports.updateDemandeInscription = updateDemandeInscription;
 exports.deleteDemandeInscription = deleteDemandeInscription;
+exports.createInternship = createInternship;
+exports.getInternships = getInternships;
+exports.getInternshipById = getInternshipById;
+exports.getInternshipsByStudentId = getInternshipsByStudentId;
+exports.updateInternship = updateInternship;
+exports.deleteInternship = deleteInternship;
 // Users
 let users = [
     { user_id: 1, nom: 'Doe', prenom: 'John', mail: 'john.doe@example.com', mdp: 'password1', role: 'admin' },
@@ -65,16 +71,16 @@ function deleteUser(user_id) {
 }
 // Notes
 let notes = [
-    { id_note: 1, id_student: 2, id_teacher: 3, name: 'Math', valeur: 85 },
-    { id_note: 2, id_student: 4, id_teacher: 5, name: 'Science', valeur: 90 },
-    { id_note: 3, id_student: 6, id_teacher: 3, name: 'History', valeur: 78 },
-    { id_note: 4, id_student: 8, id_teacher: 5, name: 'English', valeur: 88 },
-    { id_note: 5, id_student: 10, id_teacher: 3, name: 'Geography', valeur: 92 },
-    { id_note: 6, id_student: 2, id_teacher: 9, name: 'Biology', valeur: 80 },
-    { id_note: 7, id_student: 4, id_teacher: 9, name: 'Chemistry', valeur: 85 },
-    { id_note: 8, id_student: 6, id_teacher: 9, name: 'Physics', valeur: 75 },
-    { id_note: 9, id_student: 8, id_teacher: 9, name: 'Art', valeur: 90 },
-    { id_note: 10, id_student: 10, id_teacher: 9, name: 'Music', valeur: 88 }
+    { id_note: 1, id_student: 2, id_teacher: 3, name: 'Math', valeur: 17 },
+    { id_note: 2, id_student: 4, id_teacher: 5, name: 'Science', valeur: 18 },
+    { id_note: 3, id_student: 6, id_teacher: 3, name: 'History', valeur: 15 },
+    { id_note: 4, id_student: 8, id_teacher: 5, name: 'English', valeur: 16 },
+    { id_note: 5, id_student: 10, id_teacher: 3, name: 'Geography', valeur: 19 },
+    { id_note: 6, id_student: 2, id_teacher: 9, name: 'Biology', valeur: 14 },
+    { id_note: 7, id_student: 4, id_teacher: 9, name: 'Chemistry', valeur: 17 },
+    { id_note: 8, id_student: 6, id_teacher: 9, name: 'Physics', valeur: 13 },
+    { id_note: 9, id_student: 8, id_teacher: 9, name: 'Art', valeur: 18 },
+    { id_note: 10, id_student: 10, id_teacher: 9, name: 'Music', valeur: 16 }
 ];
 function createNote(note) {
     const newNote = Object.assign({ id_note: notes.length + 1 }, note);
@@ -181,6 +187,62 @@ function deleteDemandeInscription(demande_id) {
         return false;
     }
     demandesInscription.splice(demandeIndex, 1);
+    return true;
+}
+//DANS DATABASE
+let internships = [
+    { internship_id: 1, id_student: 2, company_name: 'TechCorp', start_date: '2025-06-01', end_date: '2025-12-01', description: 'Software development internship focusing on web applications.', status: 'pending' },
+    { internship_id: 2, id_student: 4, company_name: 'GreenEnergy Inc.', start_date: '2024-05-15', end_date: '2024-11-15', description: 'Internship in renewable energy research and development.', status: 'approved' },
+    { internship_id: 3, id_student: 6, company_name: 'FinancePro', start_date: '2025-07-01', end_date: '2025-10-01', description: 'Data analysis internship for financial reporting.', status: 'pending' },
+    { internship_id: 4, id_student: 8, company_name: 'HealthCare Solutions', start_date: '2024-04-01', end_date: '2024-09-01', description: 'Internship on developing healthcare management systems.', status: 'rejected' },
+    { internship_id: 5, id_student: 10, company_name: 'EduTech Labs', start_date: '2024-08-01', end_date: '2024-12-31', description: 'E-learning platform development internship.', status: 'approved' },
+];
+function createInternship(internship) {
+    const newInternship = Object.assign(Object.assign({ internship_id: internships.length + 1 }, internship), { status: 'pending' // Default status
+     });
+    internships.push(newInternship);
+    return newInternship;
+}
+function getInternships() {
+    return internships;
+}
+function getInternshipById(internship_id) {
+    return internships.find(internship => internship.internship_id === internship_id);
+}
+function getInternshipsByStudentId(student_id) {
+    return internships.filter(internship => internship.id_student === student_id);
+}
+function updateInternship(internship_id, user_id, updatedData) {
+    const internshipIndex = internships.findIndex(internship => internship.internship_id === internship_id);
+    if (internshipIndex === -1) {
+        return undefined;
+    }
+    const internship = internships[internshipIndex];
+    // If the request is made by a student, they can only edit their own internship and cannot change the status
+    if (internship.id_student === user_id) {
+        if ('status' in updatedData) {
+            throw new Error('Students cannot change the status of an internship.');
+        }
+        internships[internshipIndex] = Object.assign(Object.assign({}, internship), updatedData);
+    }
+    // If the request is made by an admin, they can only update the status
+    const requestingUser = users.find(user => user.user_id === user_id);
+    if ((requestingUser === null || requestingUser === void 0 ? void 0 : requestingUser.role) === 'admin') {
+        if ('status' in updatedData) {
+            internships[internshipIndex].status = updatedData.status;
+        }
+        else {
+            throw new Error('Admins can only update the status of an internship.');
+        }
+    }
+    return internships[internshipIndex];
+}
+function deleteInternship(internship_id) {
+    const internshipIndex = internships.findIndex(internship => internship.internship_id === internship_id);
+    if (internshipIndex === -1) {
+        return false;
+    }
+    internships.splice(internshipIndex, 1);
     return true;
 }
 //# sourceMappingURL=database.js.map

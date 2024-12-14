@@ -1,4 +1,4 @@
-import { User, Note, Devoir, DemandeInscription } from './interfaces';
+import { User, Note, Devoir, DemandeInscription, Internship } from './interfaces';
 
 
 // Users
@@ -205,4 +205,78 @@ let devoirs: Devoir[] = [
     return true;
   }
 
+
+
+
+
+//DANS DATABASE
+let internships: Internship[] = [
+    { internship_id: 1, id_student: 2, company_name: 'TechCorp', start_date: '2025-06-01', end_date: '2025-12-01', description: 'Software development internship focusing on web applications.', status: 'pending' },
+    { internship_id: 2, id_student: 4, company_name: 'GreenEnergy Inc.', start_date: '2024-05-15', end_date: '2024-11-15', description: 'Internship in renewable energy research and development.', status: 'approved' },
+    { internship_id: 3, id_student: 6, company_name: 'FinancePro', start_date: '2025-07-01', end_date: '2025-10-01', description: 'Data analysis internship for financial reporting.', status: 'pending' },
+    { internship_id: 4, id_student: 8, company_name: 'HealthCare Solutions', start_date: '2024-04-01', end_date: '2024-09-01', description: 'Internship on developing healthcare management systems.', status: 'rejected' },
+    { internship_id: 5, id_student: 10, company_name: 'EduTech Labs', start_date: '2024-08-01', end_date: '2024-12-31', description: 'E-learning platform development internship.', status: 'approved' },
+];
+
+export function createInternship(internship: Omit<Internship, 'internship_id' | 'status'>): Internship {
+  const newInternship: Internship = {
+      internship_id: internships.length + 1,
+      ...internship,
+      status: 'pending' // Default status
+  };
+  internships.push(newInternship);
+  return newInternship;
+}
+
+export function getInternships(): Internship[] {
+  return internships;
+}
+
+export function getInternshipById(internship_id: number): Internship | undefined {
+  return internships.find(internship => internship.internship_id === internship_id);
+} 
+
+export function getInternshipsByStudentId(student_id: number): Internship[] {
+  return internships.filter(internship => internship.id_student === student_id);
+}
+
+
+export function updateInternship(internship_id: number, user_id: number, updatedData: Partial<Omit<Internship, 'internship_id' | 'id_student'>>): Internship | undefined {
+  const internshipIndex = internships.findIndex(internship => internship.internship_id === internship_id);
+
+  if (internshipIndex === -1) {
+      return undefined;
+  }
+
+  const internship = internships[internshipIndex];
+
+  // If the request is made by a student, they can only edit their own internship and cannot change the status
+  if (internship.id_student === user_id) {
+      if ('status' in updatedData) {
+          throw new Error('Students cannot change the status of an internship.');
+      }
+      internships[internshipIndex] = { ...internship, ...updatedData };
+  }
+
+  // If the request is made by an admin, they can only update the status
+  const requestingUser = users.find(user => user.user_id === user_id);
+  if (requestingUser?.role === 'admin') {
+      if ('status' in updatedData) {
+          internships[internshipIndex].status = updatedData.status!;
+      } else {
+          throw new Error('Admins can only update the status of an internship.');
+      }
+  }
+
+  return internships[internshipIndex];
+}
+
+export function deleteInternship(internship_id: number): boolean {
+  const internshipIndex = internships.findIndex(internship => internship.internship_id === internship_id);
+  if (internshipIndex === -1) {
+      return false;
+  }
+  internships.splice(internshipIndex, 1);
+  return true;
+}
 
