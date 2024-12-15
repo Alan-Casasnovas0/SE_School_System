@@ -1,0 +1,23 @@
+<h2>Inscription Étudiant</h2>
+<form (ngSubmit)="onSubmit()">
+  <label for="nom">Nom</label>
+  <input type="text" id="nom" [(ngModel)]="nom" name="nom" required />
+
+  <label for="prenom">Prénom</label>
+  <input type="text" id="prenom" [(ngModel)]="prenom" name="prenom" required />
+
+  <label for="email">Email</label>
+  <input type="email" id="email" [(ngModel)]="email" name="email" required />
+
+  <label for="password">Mot de passe</label>
+  <input type="password" id="password" [(ngModel)]="password" name="password" required />
+
+  <label for="specialite">Spécialité</label>
+  <select id="specialite" [(ngModel)]="specialite" name="specialite" required>
+    <option value="Informatique">Informatique</option>
+    <option value="Mathématiques">Mathématiques</option>
+    <option value="Physique">Physique</option>
+  </select>
+
+  <button type="submit">S'inscrire</button>
+</form>

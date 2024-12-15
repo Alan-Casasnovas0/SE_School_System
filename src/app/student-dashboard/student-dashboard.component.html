@@ -1,0 +1,17 @@
+<div class="dashboard-container">
+  <h2>Bienvenue, Étudiant !</h2>
+
+  <div class="section">
+    <h3>Vos Notes</h3>
+    <ul>
+      <li *ngFor="let note of getStudentNotes()">{{ note }}</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h3>Vos Devoirs</h3>
+    <ul>
+      <li *ngFor="let devoir of getStudentAssignments()">{{ devoir }}</li>
+    </ul>
+  </div>
+</div>

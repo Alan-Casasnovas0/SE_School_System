@@ -1,0 +1,61 @@
+<div class="container">
+  <h2>Dashboard Professeur</h2>
+
+  <h3>Ajouter un Devoir</h3>
+  <form (ngSubmit)="addAssignment()">
+    <label for="assignmentTitle">Titre du devoir :</label>
+    <input
+      id="assignmentTitle"
+      [(ngModel)]="newAssignmentTitle"
+      name="assignmentTitle"
+      required
+    />
+    <br />
+    <label for="assignmentDescription">Description du devoir :</label>
+    <textarea
+      id="assignmentDescription"
+      [(ngModel)]="newAssignmentDescription"
+      name="assignmentDescription"
+      required
+    ></textarea>
+    <br />
+    <button type="submit">Ajouter le devoir</button>
+  </form>
+
+  <h3>Devoirs Attribués</h3>
+  <ul>
+    <li *ngFor="let assignment of assignments">
+      <strong>{{ assignment.title }}</strong>: {{ assignment.description }}
+    </li>
+  </ul>
+
+  <h3>Ajouter une Note</h3>
+  <form (ngSubmit)="addGrade()">
+    <label for="studentName">Nom de l'étudiant :</label>
+    <input
+      id="studentName"
+      [(ngModel)]="newStudentName"
+      name="studentName"
+      required
+    />
+    <br />
+    <label for="studentGrade">Note :</label>
+    <input
+      id="studentGrade"
+      type="number"
+      [(ngModel)]="newStudentGrade"
+      name="studentGrade"
+      required
+    />
+    <br />
+    <button type="submit">Ajouter la note</button>
+  </form>
+
+  <h3>Notes des Étudiants</h3>
+  <ul>
+    <li *ngFor="let student of studentGrades">
+      <strong>{{ student.name }}</strong>:
+      <span *ngFor="let grade of student.grades">{{ grade }}/20 </span>
+    </li>
+  </ul>
+</div>

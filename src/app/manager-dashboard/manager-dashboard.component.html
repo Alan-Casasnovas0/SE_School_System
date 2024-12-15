@@ -1,0 +1,38 @@
+<div class="container">
+  <h2>Dashboard Manager</h2>
+
+  <nav>
+    <a href="#" (click)="loadApplications()">Demandes d'Inscription</a> |
+    <a href="#">Notes des Étudiants</a> |
+    <a href="#">Devoirs Attribués</a>
+  </nav>
+
+  <h3>Demandes d'Inscription</h3>
+  <ul>
+    <li *ngFor="let request of studentRequests">
+      <strong>Nom :</strong> {{ request.name }} <br />
+      <strong>Email :</strong> {{ request.email }} <br />
+      <strong>Formation :</strong> {{ request.course }} <br />
+      <strong>Notes :</strong> {{ request.grades }} <br />
+      <strong>Statut :</strong> {{ request.status }}
+      <br />
+      <button (click)="acceptRequest(request.id)">Accepter</button>
+      <button (click)="rejectRequest(request.id)">Refuser</button>
+    </li>
+  </ul>
+
+  <h3>Notes des Étudiants</h3>
+  <ul>
+    <li *ngFor="let student of studentGrades">
+      <strong>{{ student.name }}</strong>:
+      <span *ngFor="let grade of student.grades">{{ grade }}/20 </span>
+    </li>
+  </ul>
+
+  <h3>Devoirs Attribués</h3>
+  <ul>
+    <li *ngFor="let assignment of assignments">
+      <strong>{{ assignment.title }}</strong>: {{ assignment.description }}
+    </li>
+  </ul>
+</div>
