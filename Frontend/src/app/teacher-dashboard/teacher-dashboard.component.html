@@ -1,0 +1,73 @@
+<div class="container">
+  <h2>Dashboard Professeur</h2>
+
+  <h3>Ajouter un Devoir</h3>
+  <form (ngSubmit)="addAssignment()">
+    <label for="assignmentTitle">Titre du devoir :</label>
+    <input
+      id="assignmentTitle"
+      [(ngModel)]="newAssignmentTitle"
+      name="assignmentTitle"
+      required
+    />
+    <br />
+    <label for="assignmentDescription">Description du devoir :</label>
+    <textarea
+      id="assignmentDescription"
+      [(ngModel)]="newAssignmentDescription"
+      name="assignmentDescription"
+      required
+    ></textarea>
+    <br />
+    <button type="submit">Ajouter le devoir</button>
+  </form>
+
+  <h3>Devoirs Attribués</h3>
+  <ul>
+    <li *ngFor="let assignment of getAssignments()">
+      <strong>{{ assignment.subject }}</strong>:
+      <span>{{ assignment.content }}</span>
+    </li>
+  </ul>
+
+  <h3>Ajouter une Note</h3>
+  <form (ngSubmit)="addGrade()">
+    <label for="studentId">ID de l'étudiant :</label>
+    <input
+      id="studentId"
+      type="number"
+      [(ngModel)]="newStudentId"
+      name="studentId"
+      required
+    />
+    <br />
+    <label for="assignmentSubject">Sujet :</label>
+    <input
+      id="assignmentSubject"
+      [(ngModel)]="newAssignmentSubject"
+      name="assignmentSubject"
+      required
+    />
+    <br />
+    <label for="studentGrade">Note :</label>
+    <input
+      id="studentGrade"
+      type="number"
+      [(ngModel)]="newStudentGrade"
+      name="studentGrade" 
+      required
+    />
+    <br />
+    <button type="submit">Ajouter la note</button>
+  </form>
+
+  <h3>Notes des Étudiants</h3>
+  <ul>
+    <li *ngFor="let student of getNotes()">
+      <strong>Student {{ student.id_student }}</strong>:
+      <!-- <strong>Student {{ getStudentName(student.id_student) }}</strong>: -->
+      <span>{{ student.valeur }}/20 in </span>
+      <span>{{ student.name }}</span>
+    </li>
+  </ul>
+</div>

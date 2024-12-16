@@ -1,0 +1,62 @@
+/* Style général pour les menus */
+nav {
+  background-color: #e6ffe6; /* Vert clair */
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #006600; /* Vert foncé pour le texte */
+  font-weight: bold;
+  margin-right: 15px;
+}
+
+nav a:hover {
+  color: #004d00; /* Vert légèrement plus foncé au survol */
+}
+
+h2, h3 {
+  color: #006600; /* Uniformité avec les menus */
+}
+
+/* Listes de contenu */
+ul {
+  background-color: #f9fff9; /* Arrière-plan vert très clair pour les listes */
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+li {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #e6ffe6; /* Même vert clair pour les items */
+  border: 1px solid #ccffcc; /* Bordure verte douce */
+  border-radius: 5px;
+}
+
+button {
+  background-color: #ccffcc; /* Vert doux pour les boutons */
+  border: none;
+  color: #006600;
+  font-weight: bold;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #99ff99; /* Vert légèrement plus vif au survol */
+  color: white;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff; /* Fond blanc pour le contraste */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

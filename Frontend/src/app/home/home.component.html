@@ -1,0 +1,28 @@
+<h1>Welcome to the School Management System</h1>
+<p>Log in as a student, teacher, or administrator to access your features.</p>
+
+<h2>Soumettre votre candidature</h2>
+<form (ngSubmit)="submitApplication()">
+  <label>Prénom :</label>
+  <input type="text" [(ngModel)]="firstName" name="firstName" required />
+  <br />
+  <label>Nom :</label>
+  <input type="text" [(ngModel)]="lastName" name="lastName" required />
+  <br />
+  <label>Email :</label>
+  <input type="email" [(ngModel)]="email" name="email" required />
+  <br />
+  <label>Password</label>
+  <input type="password" [(ngModel)]="password" name="password" required />
+  <br />
+  <label>Specialite :</label>
+  <input type="text" [(ngModel)]="specialite" name="course" required />
+  <br />
+  <label>Notes :</label>
+  <input type="text" [(ngModel)]="grades" name="grades" required />
+  <br />
+  <button type="submit">Soumettre</button>
+</form>
+
+<div *ngIf="successMessage" class="success">{{ successMessage }}</div>
+<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>

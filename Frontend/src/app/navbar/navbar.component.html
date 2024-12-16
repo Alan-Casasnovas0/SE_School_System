@@ -1,0 +1,8 @@
+<nav>
+  <ul>
+    <li [ngClass]="{'active': currentPage === 'home'}"><a [routerLink]="['/']" (click)="setActive('home')">Home</a></li>
+    <li [ngClass]="{'active': currentPage === 'student-login'}"><a [routerLink]="['/login']" (click)="setActive('student-login')">Connexion </a></li>
+
+    <!-- <li style="margin-left:auto;"><button (click)="logout()">Disconnect</button></li> -->
+  </ul>
+</nav>

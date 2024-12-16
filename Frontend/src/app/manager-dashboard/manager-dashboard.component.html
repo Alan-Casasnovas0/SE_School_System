@@ -1,0 +1,59 @@
+<div class="container">
+  <h2>Dashboard Manager</h2>
+
+  <!-- <nav>
+    <a href="#" (click)="fetchApplications()">Demandes d'Inscription</a> |
+    <a href="#">Notes des Étudiants</a> |
+    <a href="#">Devoirs Attribués</a>
+  </nav> -->
+
+  <h3>Demandes d'Inscription</h3>
+  <ul>
+    <li *ngFor="let request of studentRequests">
+      <strong>Nom :</strong> {{ request.lastName }} <br />
+      <strong>Prénom :</strong> {{ request.firstName }} <br />
+      <strong>Email :</strong> {{ request.email }} <br />
+      <strong>Password :</strong> {{ request.mdp }} <br />
+      <strong>Formation :</strong> {{ request.specialite }} <br />
+      <strong>Notes :</strong> {{ request.grades }}
+      <br />
+      <button (click)="acceptRequest(request.demande_id)">Accepter</button>
+      <button (click)="rejectRequest(request.demande_id)">Refuser</button>
+    </li>
+  </ul>
+
+
+  <h3>Liste des Étudiants</h3>
+  <ul>
+    <li *ngFor="let student of studentList">
+      <strong>Nom :</strong> {{ student.nom }} <br />
+      <strong>Prénom :</strong> {{ student.prenom }} <br />
+      <strong>Email :</strong> {{ student.mail }} <br />
+    </li>
+  </ul>
+
+  <h3>Liste des Professeurs</h3>
+  <ul>
+    <li *ngFor="let prof of teacherList">
+      <strong>Nom :</strong> {{ prof.nom }} <br />
+      <strong>Prénom :</strong> {{ prof.prenom }} <br />
+      <strong>Email :</strong> {{ prof.mail }} <br />
+    </li>
+  </ul>
+
+
+  <!-- <h3>Notes des Étudiants</h3>
+  <ul>
+    <li *ngFor="let student of studentGrades">
+      <strong>{{ student.name }}</strong>:
+      <span *ngFor="let grade of student.grades">{{ grade }}/20 </span>
+    </li>
+  </ul>
+
+  <h3>Devoirs Attribués</h3>
+  <ul>
+    <li *ngFor="let assignment of assignments">
+      <strong>{{ assignment.title }}</strong>: {{ assignment.description }}
+    </li>
+  </ul>
+</div> -->
