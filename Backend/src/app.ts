@@ -1,5 +1,6 @@
 import express from "express";
-import { createUser, getUsers, getUserById, updateUser, deleteUser, 
+import cors from "cors";
+import { createUser, getUsers, getUserById, updateUser, deleteUser, getStudents, getTeachers, getAdmins,
         updateNote, createNote, getNotes, getNoteById, deleteNote, 
         createDevoir, getDevoirs, getDevoirById, updateDevoir, deleteDevoir, 
         createDemandeInscription, getDemandesInscription, getDemandeInscriptionById, updateDemandeInscription, deleteDemandeInscription,
@@ -11,6 +12,7 @@ const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+app.use(cors()); 
 
 app.get("/api/liveness", (req, res) => {
     res.status(200).send("OK");
@@ -22,6 +24,24 @@ app.get("/api/liveness", (req, res) => {
 app.get('/users', (req, res) => {
   const users = getUsers();
   res.json(users);
+});
+
+// Get all students
+app.get('/students', (req, res) => {
+  const students = getStudents();
+  res.json(students);
+});
+
+// Get all teachers
+app.get('/teachers', (req, res) => {
+  const teachers = getTeachers();
+  res.json(teachers);
+});
+
+// Get all admins
+app.get('/admins', (req, res) => {
+  const admins = getAdmins();
+  res.json(admins);
 });
 
 // Get a user by ID
@@ -110,6 +130,20 @@ app.delete('/notes/:id', (req, res) => {
     res.status(404).json({ message: 'Note not found' });
   }
 });
+// get notes by student id
+app.get('/notes/student/:student_id', (req, res) => {
+  const studentId = parseInt(req.params.student_id, 10);
+  const notes = getNotes().filter(note => note.id_student === studentId);
+  res.json(notes);
+});
+
+// get notes by teacher id
+app.get('/notes/teacher/:teacher_id', (req, res) => {
+  const teacherId = parseInt(req.params.teacher_id, 10);
+  const notes = getNotes().filter(note => note.id_teacher === teacherId);
+  res.json(notes);
+});
+
 
 // Devoirs
 // Get all devoirs
@@ -157,6 +191,19 @@ app.delete('/devoirs/:id', (req, res) => {
   }
 });
 
+// get devoirs by student id
+app.get('/devoirs/student/:student_id', (req, res) => {
+  const studentId = parseInt(req.params.student_id, 10);
+  const devoirs = getDevoirs().filter(devoir => devoir.id_student === studentId);
+  res.json(devoirs);
+});
+
+// get devoirs by teacher id
+app.get('/devoirs/teacher/:teacher_id', (req, res) => {
+  const teacherId = parseInt(req.params.teacher_id, 10);
+  const devoirs = getDevoirs().filter(devoir => devoir.id_teacher === teacherId);
+  res.json(devoirs);
+});
 
 // Demandes d'inscription
 

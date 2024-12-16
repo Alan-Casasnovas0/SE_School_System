@@ -4,10 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
 const database_1 = require("./database");
 const app = (0, express_1.default)();
 const PORT = 3000;
 app.use(express_1.default.json());
+app.use((0, cors_1.default)());
 app.get("/api/liveness", (req, res) => {
     res.status(200).send("OK");
 });
@@ -16,6 +18,21 @@ app.get("/api/liveness", (req, res) => {
 app.get('/users', (req, res) => {
     const users = (0, database_1.getUsers)();
     res.json(users);
+});
+// Get all students
+app.get('/students', (req, res) => {
+    const students = (0, database_1.getStudents)();
+    res.json(students);
+});
+// Get all teachers
+app.get('/teachers', (req, res) => {
+    const teachers = (0, database_1.getTeachers)();
+    res.json(teachers);
+});
+// Get all admins
+app.get('/admins', (req, res) => {
+    const admins = (0, database_1.getAdmins)();
+    res.json(admins);
 });
 // Get a user by ID
 app.get('/users/:id', (req, res) => {
@@ -99,6 +116,18 @@ app.delete('/notes/:id', (req, res) => {
         res.status(404).json({ message: 'Note not found' });
     }
 });
+// get notes by student id
+app.get('/notes/student/:student_id', (req, res) => {
+    const studentId = parseInt(req.params.student_id, 10);
+    const notes = (0, database_1.getNotes)().filter(note => note.id_student === studentId);
+    res.json(notes);
+});
+// get notes by teacher id
+app.get('/notes/teacher/:teacher_id', (req, res) => {
+    const teacherId = parseInt(req.params.teacher_id, 10);
+    const notes = (0, database_1.getNotes)().filter(note => note.id_teacher === teacherId);
+    res.json(notes);
+});
 // Devoirs
 // Get all devoirs
 app.get('/devoirs', (req, res) => {
@@ -142,6 +171,18 @@ app.delete('/devoirs/:id', (req, res) => {
     else {
         res.status(404).json({ message: 'Devoir not found' });
     }
+});
+// get devoirs by student id
+app.get('/devoirs/student/:student_id', (req, res) => {
+    const studentId = parseInt(req.params.student_id, 10);
+    const devoirs = (0, database_1.getDevoirs)().filter(devoir => devoir.id_student === studentId);
+    res.json(devoirs);
+});
+// get devoirs by teacher id
+app.get('/devoirs/teacher/:teacher_id', (req, res) => {
+    const teacherId = parseInt(req.params.teacher_id, 10);
+    const devoirs = (0, database_1.getDevoirs)().filter(devoir => devoir.id_teacher === teacherId);
+    res.json(devoirs);
 });
 // Demandes d'inscription
 // Get all demandes inscription

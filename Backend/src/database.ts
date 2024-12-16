@@ -28,6 +28,18 @@ let users: User[] = [
   export function getUsers(): User[] {
     return users;
   }
+
+  export function getStudents(): User[] {
+    return users.filter(user => user.role === 'student');
+  }
+
+  export function getTeachers(): User[] {
+    return users.filter(user => user.role === 'teacher');
+  }
+
+  export function getAdmins(): User[] {
+    return users.filter(user => user.role === 'admin');
+  }
   
   export function getUserById(user_id: number): User | undefined {
     return users.find(user => user.user_id === user_id);
@@ -81,6 +93,10 @@ let users: User[] = [
   
   export function getNotes(): Note[] {
     return notes;
+  }
+
+  export function getNotesByStudentId(id_student: number): Note[] {
+    return notes.filter(note => note.id_student === id_student);
   }
   
   export function getNoteById(id_note: number): Note | undefined {
@@ -155,19 +171,26 @@ let devoirs: Devoir[] = [
     devoirs.splice(devoirIndex, 1);
     return true;
   }
+  export function getDevoirsByStudentId(id_student: number): Devoir[] {
+    return devoirs.filter(devoir => devoir.id_student === id_student);
+  }
+
+  export function getDevoirsByTeacherId(id_teacher: number): Devoir[] {
+    return devoirs.filter(devoir => devoir.id_teacher === id_teacher);
+  }
 
   // DemandeInscription
   let demandesInscription: DemandeInscription[] = [
-    { demande_id: 1, nom: 'Garcia', prenom: 'Maria', mail: 'maria.garcia@example.com', mdp: 'password11', specialite: 'Computer Science', GPA: 3.8 },
-    { demande_id: 2, nom: 'Rodriguez', prenom: 'Carlos', mail: 'carlos.rodriguez@example.com', mdp: 'password12', specialite: 'Engineering', GPA: 3.9 },
-    { demande_id: 3, nom: 'Lee', prenom: 'Susan', mail: 'susan.lee@example.com', mdp: 'password13', specialite: 'Mathematics', GPA: 3.7 },
-    { demande_id: 4, nom: 'Walker', prenom: 'Robert', mail: 'robert.walker@example.com', mdp: 'password14', specialite: 'Physics', GPA: 3.6 },
-    { demande_id: 5, nom: 'Hall', prenom: 'Megan', mail: 'megan.hall@example.com', mdp: 'password15', specialite: 'Chemistry', GPA: 3.8 },
-    { demande_id: 6, nom: 'Allen', prenom: 'Brian', mail: 'brian.allen@example.com', mdp: 'password16', specialite: 'Biology', GPA: 3.9 },
-    { demande_id: 7, nom: 'Young', prenom: 'Amy', mail: 'amy.young@example.com', mdp: 'password17', specialite: 'History', GPA: 3.7 },
-    { demande_id: 8, nom: 'Hernandez', prenom: 'Jose', mail: 'jose.hernandez@example.com', mdp: 'password18', specialite: 'Literature', GPA: 3.6 },
-    { demande_id: 9, nom: 'King', prenom: 'Emma', mail: 'emma.king@example.com', mdp: 'password19', specialite: 'Psychology', GPA: 3.8 },
-    { demande_id: 10, nom: 'Wright', prenom: 'Samuel', mail: 'samuel.wright@example.com', mdp: 'password20', specialite: 'Economics', GPA: 3.9 }
+    { demande_id: 1, lastName: 'Garcia', firstName: 'Maria', email: 'maria.garcia@example.com', mdp: 'password11', specialite: 'Computer Science', grades: 18 },
+    { demande_id: 2, lastName: 'Rodriguez', firstName: 'Carlos', email: 'carlos.rodriguez@example.com', mdp: 'password12', specialite: 'Engineering', grades: 19 },
+    { demande_id: 3, lastName: 'Lee', firstName: 'Susan', email: 'susan.lee@example.com', mdp: 'password13', specialite: 'Mathematics', grades: 17 },
+    { demande_id: 4, lastName: 'Walker', firstName: 'Robert', email: 'robert.walker@example.com', mdp: 'password14', specialite: 'Physics', grades: 16 },
+    { demande_id: 5, lastName: 'Hall', firstName: 'Megan', email: 'megan.hall@example.com', mdp: 'password15', specialite: 'Chemistry', grades: 18 },
+    { demande_id: 6, lastName: 'Allen', firstName: 'Brian', email: 'brian.allen@example.com', mdp: 'password16', specialite: 'Biology', grades: 19 },
+    { demande_id: 7, lastName: 'Young', firstName: 'Amy', email: 'amy.young@example.com', mdp: 'password17', specialite: 'History', grades: 17 },
+    { demande_id: 8, lastName: 'Hernandez', firstName: 'Jose', email: 'jose.hernandez@example.com', mdp: 'password18', specialite: 'Literature', grades: 16 },
+    { demande_id: 9, lastName: 'King', firstName: 'Emma', email: 'emma.king@example.com', mdp: 'password19', specialite: 'Psychology', grades: 18 },
+    { demande_id: 10, lastName: 'Wright', firstName: 'Samuel', email: 'samuel.wright@example.com', mdp: 'password20', specialite: 'Economics', grades: 19 }
   ];
   
   export function createDemandeInscription(demande: Omit<DemandeInscription, 'demande_id'>): DemandeInscription {

@@ -26,12 +26,12 @@ export interface Devoir {
   
 export interface DemandeInscription {
     demande_id: number;
-    nom: string;
-    prenom: string;
-    mail: string;
+    lastName: string;
+    firstName: string;
+    email: string;
     mdp: string;
     specialite: string;
-    GPA: number;
+    grades: number;
   }
 
   export interface Internship {
