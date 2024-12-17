@@ -17,7 +17,8 @@ export class HomeComponent {
   firstName: string = '';
   lastName: string = '';
   email: string = '';
-  course: string = '';
+  password: string = '';
+  specialite: string = '';
   grades: string = '';
   successMessage: string = '';
   errorMessage: string = '';
@@ -25,12 +26,13 @@ export class HomeComponent {
   constructor(private applicationService: ApplicationService, private router: Router) {}
 
   submitApplication(): void {
-    if (this.firstName && this.lastName && this.email && this.course && this.grades) {
+    if (this.firstName && this.lastName && this.email && this.specialite && this.grades && this.password) {
       const application = {
         firstName: this.firstName,
         lastName: this.lastName,
         email: this.email,
-        course: this.course,
+        mdp: this.password,
+        specialite: this.specialite,
         grades: this.grades,
       };
 
@@ -54,7 +56,8 @@ export class HomeComponent {
     this.firstName = '';
     this.lastName = '';
     this.email = '';
-    this.course = '';
+    this.password = '';
+    this.specialite = '';
     this.grades = '';
   }
 }

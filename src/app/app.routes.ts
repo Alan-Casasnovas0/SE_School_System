@@ -9,6 +9,8 @@ import { ManagerDashboardComponent } from './manager-dashboard/manager-dashboard
 import {AuthGuard} from './auth/auth.guard';
 import {TeacherGuard} from './auth/teacher.guard';
 import {ManagerGuard} from './auth/manager.guard';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -19,3 +21,8 @@ export const routes: Routes = [
   { path: 'teacher-dashboard', component: TeacherDashboardComponent, canActivate: [AuthGuard, TeacherGuard] },
   { path: 'manager-dashboard', component: ManagerDashboardComponent, canActivate: [AuthGuard, ManagerGuard] },
 ];
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule {}

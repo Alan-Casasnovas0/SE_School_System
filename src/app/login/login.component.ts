@@ -18,11 +18,14 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  onSubmit(): void {
-    if (this.authService.login(this.email, this.password, this.role)) {
+  async onSubmit(): Promise<void> {
+    console.log('Login attempt with:', this.email, this.password, this.role);
+    if (await this.authService.login(this.email, this.password, this.role)) {
+      console.log('Login successful! with role  :', this.role, 'and id:', localStorage.getItem('currentUserID'));
       if (this.role === 'teacher') {
         this.router.navigate(['/teacher-dashboard']);
-      } else if (this.role === 'manager') {
+      } else if (this.role === 'admin') {
+        console.log('Manager login');
         this.router.navigate(['/manager-dashboard']);
       } else {
         this.router.navigate(['/student-dashboard']);

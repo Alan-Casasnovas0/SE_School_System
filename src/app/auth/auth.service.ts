@@ -1,35 +1,38 @@
 import { Injectable } from '@angular/core';
+import { User } from '../services/interfaces';
+import { getUsers } from '../services/apiService';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private currentUser: { name: string, role: string } | null = null;
-
   constructor() { }
 
-  // Simuler une connexion avec un faux profil
-  login(email: string, password: string, role: string): boolean {
-    // Ici, tu peux remplacer par une vraie logique de vérification de l'email et du mot de passe
-    if (email === 'student@example.com' && password === 'password123' && role === 'student') {
-      this.currentUser = { name: 'Étudiant Test', role: 'student' };
-      return true;
+  currentUser: User | null = null;
+
+  async login(email: string, password: string, role: string): Promise<boolean> {
+    try {
+      const users: User[] = await getUsers();
+      const user = users.find(u => u.mail === email && u.mdp === password && u.role === role);
+
+      if (user) {
+        this.currentUser = user;
+        localStorage.setItem('currentUserID', user.user_id.toString());
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      return false;
     }
-    if (email === 'teacher@example.com' && password === 'password123' && role === 'teacher') {
-      this.currentUser = { name: 'Professeur Test', role: 'teacher' };
-      return true;
-    }
-    if (email === 'manager@example.com' && password === 'password123' && role === 'manager') {
-      this.currentUser = { name: 'Manager Test', role: 'manager' };
-      return true;
-    }
-    return false;
   }
 
   // Récupérer le nom de l'utilisateur connecté (étudiant, professeur, manager)
   getStudentName(): string {
-    return this.currentUser?.name ?? 'Inconnu';
+    return this.currentUser?.nom ?? 'Inconnu';
   }
 
   // Récupérer le rôle de l'utilisateur connecté
@@ -54,7 +57,7 @@ export class AuthService {
 
   // Vérifier si l'utilisateur est un manager
   isManager(): boolean {
-    return this.currentUser?.role === 'manager';
+    return this.currentUser?.role === 'admin';
   }
 
   // Déconnexion

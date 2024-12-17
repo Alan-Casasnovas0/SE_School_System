@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { createDemandeInscription } from '../services/apiService';
 
 @Component({
   selector: 'app-student-registration',
@@ -22,4 +23,19 @@ export class StudentRegistrationComponent {
     console.log('Mot de passe:', this.password);
     console.log('Spécialité:', this.specialite);
   }
+
+  createDemandeInscription() {
+    const demandeData = {
+      nom: this.nom,
+      prenom: this.prenom,
+      email: this.email,
+      password: this.password,
+      specialite: this.specialite
+    };
+
+    createDemandeInscription(demandeData)
+      .then((demande) => {
+        alert('Demande d\'inscription créée avec succès!');
+  })};
+
 }

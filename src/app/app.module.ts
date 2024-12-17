@@ -26,6 +26,6 @@ import { NavbarComponent } from './navbar/navbar.component';
     ManagerLoginComponent,
     NavbarComponent
   ],
-  bootstrap: [AppComponent]  // Utilisation du composant standalone AppComponent
+  // bootstrap: [AppComponent]  // Utilisation du composant standalone AppComponent
 })
 export class AppModule { }

@@ -19,9 +19,9 @@ export class TeacherLoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  login() {
+  async login() {
     const role = 'teacher';  // Définir le rôle comme 'teacher'
-    if (this.authService.login(this.email, this.password, role)) {
+    if (await this.authService.login(this.email, this.password, role)) {
       this.router.navigate(['/dashboard/teacher']);
     } else {
       this.errorMessage = 'Invalid email or password!';

@@ -19,9 +19,9 @@ export class ManagerLoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  login() {
+  async login() {
     const role = 'manager';  // Définir le rôle comme 'manager'
-    if (this.authService.login(this.email, this.password, role)) {
+    if (await this.authService.login(this.email, this.password, role)) {
       this.router.navigate(['/dashboard/manager']);
     } else {
       this.errorMessage = 'Invalid email or password!';

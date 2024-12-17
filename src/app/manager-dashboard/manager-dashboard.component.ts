@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApplicationService } from '../services/application.service';
-import {NgForOf} from '@angular/common';
+import { NgForOf } from '@angular/common';
+import { createUser, deleteDemandeInscription, getDemandeInscriptionById, getDemandesInscription, getStudents, getTeachers } from '../services/apiService';
+import { DemandeInscription, User } from '../services/interfaces';
 
 @Component({
   selector: 'app-manager-dashboard',
@@ -12,10 +14,9 @@ import {NgForOf} from '@angular/common';
 })
 export class ManagerDashboardComponent implements OnInit {
   // Exemples de demandes d'inscription
-  studentRequests = [
-    { id: 1, name: 'Jean Dupont', email: 'jean.dupont@example.com', course: 'Mathématiques', grades: '15/20', status: 'En attente' },
-    { id: 2, name: 'Alice Martin', email: 'alice.martin@example.com', course: 'Physique', grades: '12/20', status: 'En attente' },
-  ];
+  studentRequests:DemandeInscription[] = [];
+  studentList: User[] = [];
+  teacherList: User[] = [];
 
   // Exemples de notes données par les enseignants
   studentGrades = [
@@ -29,40 +30,61 @@ export class ManagerDashboardComponent implements OnInit {
     { title: 'Exercice de Mathématiques', description: 'Résolution d\'équations différentielles' },
   ];
 
-  constructor(private applicationService: ApplicationService) {}
+  constructor(private applicationService: ApplicationService) { }
 
   ngOnInit(): void {
     // Charger les applications si nécessaire
-    this.loadApplications();
+    this.fetchApplications();
+    this.fetchAllStudents();
+    this.fetchAllTeachers();
   }
 
-  loadApplications(): void {
-    this.applicationService.getApplications().then((applications) => {
-      this.studentRequests = [
-        ...this.studentRequests,
-        ...applications.map((application, index) => ({
-          id: this.studentRequests.length + index + 1,
-          name: `${application.firstName} ${application.lastName}`,
-          email: application.email,
-          course: application.course,
-          grades: application.grades,
-          status: 'En attente',
-        })),
-      ];
+  fetchApplications(): void {
+    getDemandesInscription().then((requests) => {
+      this.studentRequests = requests;
+    });
+  }
+  acceptRequest(id: number): void {
+    let request: DemandeInscription;
+    getDemandeInscriptionById(id).then((data) => {
+      request = data;
+      alert('Adding new student: ' + request.firstName + ' ' + request.lastName);
+      console.log('Accepting request:', request);
+      const user = {
+        nom: request.lastName,
+        prenom: request.firstName,
+        mail: request.email,
+        mdp: request.mdp,
+        role: 'student',
+      };
+      createUser(user).then(() => {
+        deleteDemandeInscription(id).then(() => {
+          this.fetchApplications(); // Recharger les demandes après la suppression
+          this.fetchAllStudents(); // Recharger la liste des étudiants
+        });
+      });
     });
   }
 
-  acceptRequest(id: number): void {
-    const request = this.studentRequests.find((req) => req.id === id);
-    if (request) {
-      request.status = 'Accepté';
-    }
+  rejectRequest(id: number): void {
+    console.log('Rejecting request:', id);
+    deleteDemandeInscription(id).then(() => {
+      this.fetchApplications(); // Recharger les demandes après la suppression
+    });
   }
 
-  rejectRequest(id: number): void {
-    const request = this.studentRequests.find((req) => req.id === id);
-    if (request) {
-      request.status = 'Refusé';
-    }
+
+  fetchAllStudents() {
+    getStudents().then((students) => {
+      console.log('Students:', students);
+      this.studentList = students;
+    });
   }
+  fetchAllTeachers() {
+    getTeachers().then((teacher) => {
+      console.log('Teachers:', teacher);
+      this.teacherList = teacher;
+    });
+  }
+
 }

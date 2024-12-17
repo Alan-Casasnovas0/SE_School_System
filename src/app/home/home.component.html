@@ -1,3 +1,6 @@
+<h1>Welcome to the School Management System</h1>
+<p>Log in as a student, teacher, or administrator to access your features.</p>
+
 <h2>Soumettre votre candidature</h2>
 <form (ngSubmit)="submitApplication()">
   <label>Prénom :</label>
@@ -9,8 +12,11 @@
   <label>Email :</label>
   <input type="email" [(ngModel)]="email" name="email" required />
   <br />
-  <label>Formation :</label>
-  <input type="text" [(ngModel)]="course" name="course" required />
+  <label>Password</label>
+  <input type="password" [(ngModel)]="password" name="password" required />
+  <br />
+  <label>Specialite :</label>
+  <input type="text" [(ngModel)]="specialite" name="course" required />
   <br />
   <label>Notes :</label>
   <input type="text" [(ngModel)]="grades" name="grades" required />
