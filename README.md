@@ -2,11 +2,11 @@
 
 **CDOF1**
 
-**Noémie MAZEPA** 
-**Lorrain MORLET** 
-**Noëmie NURIJANYAN** 
-**Alan CASASNOVAS** 
-**Luca CAVALIERE**
+- **Noémie MAZEPA** 
+- **Lorrain MORLET** 
+- **Noëmie NURIJANYAN** 
+- **Alan CASASNOVAS** 
+- **Luca CAVALIERE**
 
 
 ## Project Overview
