@@ -33,7 +33,7 @@ The website provides different user experiences for **Admins**, **Teachers**, an
 
 ### 1. **Home Page**
 - Allows potential futur students to **submit an application** for admission.
-
+![Home Page](https://github.com/Alan-Casasnovas0/SE_School_System/blob/Front-%26-Back/images/welcome.png)
 
 ### 2. **Login/Connection Page**
 - Role-specific login for **Admins**, **Teachers**, and **Students**.
