@@ -53,6 +53,6 @@ The website provides different user experiences for **Admins**, **Teachers**, an
  
 
 ## Task distribution
-- Frontend: Luca, Alan and Noëmie worked all 3 on the frontend, they created the pages and thought out the style of the website
-- Backend and database: Lorrain and Noémie worked on the backend and the database. They wrote all of the CRUD requests to get, update or delete values in the mySQL database connected to the backend.
-- Connexion of the 2 parts: we all worked on this part. We communicated a lot to understand what everyone had done on their part and connect everything together.
+- **Frontend**: Luca, Alan and Noëmie worked all 3 on the frontend, they created the pages and thought out the style of the website
+- **Backend and database**: Lorrain and Noémie worked on the backend and the database. They wrote all of the CRUD requests to get, update or delete values in the mySQL database connected to the backend.
+- **Connexion of the 2 parts**: we all worked on this part. We communicated a lot to understand what everyone had done on their part and connect everything together.
