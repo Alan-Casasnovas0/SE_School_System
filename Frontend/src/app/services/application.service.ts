@@ -1,30 +1,34 @@
 import { Injectable } from '@angular/core';
-import { createDemandeInscription } from '../services/apiService';
+import { createDemandeInscription } from './apiService';
+import { DemandeInscription } from './interfaces';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ApplicationService {
-  private applications: any[] = [];
+  async submitApplication(application: DemandeInscription): Promise<any> {
+    try {
+      // Ensure all required fields are present and properly formatted
+      const formattedApplication = {
+        firstName: application.firstName,
+        lastName: application.lastName,
+        email: application.email,
+        mdp: application.mdp,
+        id_specialite: application.id_specialite,
+        grades: Number(application.grades) // Ensure grades is a number
+      };
 
-  submitApplication(application: any): Promise<void> {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        createDemandeInscription(application)
-        this.applications.push(application);
-        console.log('Candidature soumise :', application);
-        resolve();
-      }, 1000);
-    });
+      // Validate no undefined values
+      Object.entries(formattedApplication).forEach(([key, value]) => {
+        if (value === undefined || value === null) {
+          throw new Error(`Missing required field: ${key}`);
+        }
+      });
+
+      return await createDemandeInscription(formattedApplication);
+    } catch (error) {
+      console.error('Error in submitApplication:', error);
+      throw error;
+    }
   }
-
-  getApplications(): Promise<any[]> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(this.applications);
-      }, 500); // Simuler une requête réseau
-    });
-  }
-
-  
 }

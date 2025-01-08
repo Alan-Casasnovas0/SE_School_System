@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgForOf } from '@angular/common';
-import { Devoir, Note, User } from '../services/interfaces';
-import { createDevoir, createNote, getDevoirsByTeacherId, getNotesByTeacherId, getStudents, getUserById } from '../services/apiService';
-
+import { Devoir, Note, User, Matiere } from '../services/interfaces';
+import { createDevoir, createNote, getDevoirsByTeacherId, getNotesByTeacherId, getStudents, getUserById, getMatieres } from '../services/apiService';
 
 @Component({
   selector: 'app-teacher-dashboard',
@@ -18,11 +17,23 @@ export class TeacherDashboardComponent {
   currentId: number = 0;
   assignments: Devoir[] = [];
   notes: Note[] = [];
+  matieres: Matiere[] = [];
+  students: User[] = [];
 
   ngOnInit(): void {
     this.currentId = parseInt(localStorage.getItem('currentUserID') || '0');
     this.assignments = this.fetchAssignments();
     this.notes = this.fetchNotes();
+    this.fetchMatieres();
+    this.fetchStudents();
+  }
+
+  fetchMatieres(): void {
+    getMatieres().then(matieres => {
+      this.matieres = matieres;
+    }).catch(error => {
+      console.error('Error fetching matieres:', error);
+    });
   }
 
   fetchNotes(): Note[] {
@@ -39,7 +50,7 @@ export class TeacherDashboardComponent {
   fetchAssignments(): Devoir[] {
     getDevoirsByTeacherId(this.currentId).then(devoirs => {
       const r_devoirs = devoirs.map((devoir: Devoir) => this.assignments.push(devoir));
-      // console.log('Assignments for teacher ', this.currentId, ' :', r_devoirs);
+      console.log('Assignments for teacher ', this.currentId, ' :', r_devoirs);
       return r_devoirs;
     }).catch(error => {
       console.error('Error fetching student assignments:', error);
@@ -57,21 +68,6 @@ export class TeacherDashboardComponent {
     return this.assignments;
   }
 
-  // studentsNames: string[] = [];
-
-  // getStudentName(id: number): string {
-  //   if (this.studentsNames[id]) {
-  //     return this.studentsNames[id];
-  //   }
-  //   let studentName: string = 'Student '+id;
-  //   getUserById(id).then((student: User) => {
-  //     studentName = student.nom + ' ' + student.prenom;
-  //     console.log('Student:', studentName);
-  //     this.studentsNames[id] = studentName;
-  //     return studentName;
-  //   }).catch(error => { console.error('Error fetching student:', error); });
-  //   return studentName;
-  // }
 
   // Variables pour saisir de nouvelles notes et devoirs
   newAssignmentTitle: string = '';
@@ -79,55 +75,77 @@ export class TeacherDashboardComponent {
   newStudentId: number = -1;
   newAssignmentSubject: string = '';
   newStudentGrade: number = 0;
+  selectedMatiereId: number = -1;
 
   addAssignment() {
-    if (this.newAssignmentTitle && this.newAssignmentDescription) {
-      let newDevoir: Devoir = { id_devoir: -1, subject: '', content: '', id_student: -1, id_teacher: -1 };
+    if (this.newAssignmentTitle && this.newAssignmentDescription && this.selectedMatiereId !== -1) {
       createDevoir({
-        subject: this.newAssignmentTitle,
         content: this.newAssignmentDescription,
-        id_student: 0,
-        id_teacher: this.currentId
+        id_student: 4,
+        id_teacher: this.currentId,
+        id_matiere: this.selectedMatiereId
       }).then(devoir => {
-        newDevoir = devoir;
-        // console.log('New assignment:', newDevoir);
         this.assignments = this.fetchAssignments();
+        this.fetchMatieres();
+        this.newAssignmentTitle = '';
+        this.newAssignmentDescription = '';
+        this.selectedMatiereId = -1;
         alert('Assignment added successfully');
-      }).catch(error => { console.error('Error creating assignment:', error); });
-
+      }).catch(error => { 
+        console.error('Error creating assignment:', error); 
+      });
+    } else {
+      alert('Please fill all fields including selecting a subject');
     }
   }
 
   addGrade() {
-    // console.log('Try adding New grade:', this.newStudentId, this.newAssignmentSubject, this.newStudentGrade);
-    if (this.newStudentId != -1 && this.newStudentGrade >= 0 && this.newStudentGrade <= 20 && this.newAssignmentSubject) {
-      // check if student exists
-      let students_ids: number[] = [];
-      getStudents().then((students) => {
-        // console.log('Students:', students);
-        students.map((student: User) => {
-          // console.log('Student:', student, student.user_id);
-          students_ids.push(student.user_id)
-        });
-
-        console.log('Students:', students_ids);
-        if (students_ids.indexOf(this.newStudentId) === -1) {
-          alert('Student not found');
-          return;
-        }
-        let newNote: Note = { id_note: -1, name: 'a', valeur: 0, id_student: -1, id_teacher: -1 };
-        createNote({
-          name: this.newAssignmentSubject,
-          valeur: this.newStudentGrade,
-          id_student: this.newStudentId,
-          id_teacher: this.currentId
-        }).then(note => {
-          newNote = note;
-          // console.log('New grade:', newNote);
-          this.notes = this.fetchNotes();
-          alert('Grade added successfully');
-        }).catch(error => { console.error('Error creating grade:', error); });
-      }).catch(error => { console.error('Error fetching students:', error); });
+    if (this.newStudentId != -1 && 
+        this.newStudentGrade >= 0 && 
+        this.newStudentGrade <= 20 && 
+        this.newAssignmentSubject &&
+        this.selectedMatiereId !== -1) {
+      
+      createNote({
+        name: this.newAssignmentSubject,
+        valeur: this.newStudentGrade,
+        id_student: this.newStudentId,
+        id_teacher: this.currentId,
+        id_matiere: this.selectedMatiereId
+      }).then(note => {
+        this.notes = this.fetchNotes();
+        this.newStudentId = -1;
+        this.newAssignmentSubject = '';
+        this.newStudentGrade = 0;
+        this.selectedMatiereId = -1;
+        alert('Grade added successfully');
+      }).catch(error => { console.error('Error creating grade:', error); });
+    } else {
+      alert('Please fill all fields including selecting a subject');
     }
+  }
+
+  getMatiereNameById(id: number): string {
+    console.log('try to find matiere with id : ', id);
+    console.log('all matieres : ', this.matieres);
+    const matiere = this.matieres.find(m => m.matiere_id === id);
+    return matiere ? matiere.nom : 'Unknown Subject';
+  }
+
+  fetchStudents(): void {
+    getStudents().then(students => {
+      this.students = students;
+    }).catch(error => {
+      console.error('Error fetching students:', error);
+    });
+  }
+
+  getStudentFullName(student: User): string {
+    return `${student.prenom} ${student.nom}`;
+  }
+
+  getStudentNameForNote(studentId: number): string {
+    const student = this.students.find(s => s.user_id === studentId);
+    return student ? this.getStudentFullName(student) : 'Unknown Student';
   }
 }

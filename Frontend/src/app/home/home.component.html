@@ -1,28 +1,85 @@
-<h1>Welcome to the School Management System</h1>
-<p>Log in as a student, teacher, or administrator to access your features.</p>
+<div class="container mt-5">
+  <div class="row mb-4">
+    <div class="col-12">
+      <h1 class="mb-3">Bienvenue sur le Système de Gestion Scolaire</h1>
+      <p class="lead">Connectez-vous en tant qu'étudiant, enseignant ou administrateur pour accéder à vos fonctionnalités.</p>
+    </div>
+  </div>
 
-<h2>Soumettre votre candidature</h2>
-<form (ngSubmit)="submitApplication()">
-  <label>Prénom :</label>
-  <input type="text" [(ngModel)]="firstName" name="firstName" required />
-  <br />
-  <label>Nom :</label>
-  <input type="text" [(ngModel)]="lastName" name="lastName" required />
-  <br />
-  <label>Email :</label>
-  <input type="email" [(ngModel)]="email" name="email" required />
-  <br />
-  <label>Password</label>
-  <input type="password" [(ngModel)]="password" name="password" required />
-  <br />
-  <label>Specialite :</label>
-  <input type="text" [(ngModel)]="specialite" name="course" required />
-  <br />
-  <label>Notes :</label>
-  <input type="text" [(ngModel)]="grades" name="grades" required />
-  <br />
-  <button type="submit">Soumettre</button>
-</form>
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title mb-4">Soumettre votre candidature</h2>
+          
+          <form (ngSubmit)="submitApplication()" class="needs-validation">
+            <div class="row">
+              <!-- First Column -->
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="firstName" class="form-label">Prénom :</label>
+                    <input type="text" class="form-control" id="firstName" [(ngModel)]="firstName" name="firstName" required>
+                  </div>
 
-<div *ngIf="successMessage" class="success">{{ successMessage }}</div>
-<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+                  <div class="col-md-6 mb-3">
+                    <label for="lastName" class="form-label">Nom :</label>
+                    <input type="text" class="form-control" id="lastName" [(ngModel)]="lastName" name="lastName" required>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email :</label>
+                  <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email" required>
+                </div>
+
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password :</label>
+                  <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password" required>
+                </div>
+              </div>
+
+              <!-- Second Column -->
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="specialite" class="form-label">Specialite :</label>
+                  <select class="form-control" id="specialite" [(ngModel)]="specialite" name="specialite" required>
+                    <option value="">Sélectionnez une spécialité</option>
+                    <option *ngFor="let spec of specialites" [value]="spec.nom">
+                      {{spec.nom}}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label for="grades" class="form-label">Notes :</label>
+                  <input 
+                    type="number" 
+                    class="form-control" 
+                    id="grades" 
+                    [(ngModel)]="grades" 
+                    name="grades" 
+                    required
+                    min="0"
+                    max="20"
+                    step="0.01">
+                </div>
+
+                <div class="mt-4">
+                  <button type="submit" class="btn btn-success w-100">Soumettre</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-12">
+                <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+                <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

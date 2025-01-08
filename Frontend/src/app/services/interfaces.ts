@@ -8,29 +8,30 @@ export interface User {
     role: 'admin' | 'student' | 'teacher';
   }
   
-export interface Note {
+  export interface Note {
     id_note: number;
     id_student: number; // Foreign key
     id_teacher: number; // Foreign key
-    name: string;
+    id_matiere: number;
     valeur: number;
   }
   
-export interface Devoir {
+  export interface Devoir {
     id_devoir: number;
     id_student: number; // Foreign key
     id_teacher: number; // Foreign key
-    subject: string;
+    id_matiere: number;
     content: string;
   }
   
-export interface DemandeInscription {
+  export interface DemandeInscription {
     demande_id: number;
     lastName: string;
     firstName: string;
     email: string;
     mdp: string;
-    specialite: string;
+    id_specialite: number;
+    specialite?: string;
     grades: number;
   }
 
@@ -42,4 +43,16 @@ export interface DemandeInscription {
     end_date: string; // ISO 8601 format (e.g., "2024-09-01")
     description: string;
     status: 'pending' | 'approved' | 'rejected';
+}
+
+export interface Specialite {
+  specialite_id: number;
+  nom: string;
+  description?: string;
+}
+
+export interface Matiere {
+  matiere_id: number;
+  nom: string;
+  description?: string;
 }

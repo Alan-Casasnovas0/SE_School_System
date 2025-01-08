@@ -198,7 +198,7 @@ export const getDevoirsByTeacherId = async (teacherId: number) => {
 
 export const createDevoir = async (devoirData: any) => {
   try {
-    // console.log('Creating devoir:', devoirData);
+    console.log('Creating devoir:', devoirData);
     const response = await axios.post(`${API_BASE_URL}/devoirs`, devoirData);
     return response.data;
   } catch (error) {
@@ -254,6 +254,7 @@ export const createDemandeInscription = async (demandeData: any) => {
     return response.data;
   } catch (error) {
     console.error('Error creating demande inscription:', error);
+    console.log(demandeData);
     throw error;
   }
 };
@@ -335,6 +336,48 @@ export const deleteInternship = async (id: number) => {
     return response.data;
   } catch (error) {
     console.error('Error deleting internship:', error);
+    throw error;
+  }
+};
+
+// Specialites
+export const getSpecialites = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/specialites`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching specialites:', error);
+    throw error;
+  }
+};
+
+export const getSpecialiteById = async (id: number) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/specialites/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching specialite by ID:', error);
+    throw error;
+  }
+};
+
+// Matieres
+export const getMatieres = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/matieres`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching matieres:', error);
+    throw error;
+  }
+};
+
+export const getMatiereById = async (id: number) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/matieres/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching matiere by ID:', error);
     throw error;
   }
 };

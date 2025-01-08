@@ -5,14 +5,15 @@ import { createUser, getUsers, getUserById, updateUser, deleteUser, getStudents,
         createDevoir, getDevoirs, getDevoirById, updateDevoir, deleteDevoir, 
         createDemandeInscription, getDemandesInscription, getDemandeInscriptionById, updateDemandeInscription, deleteDemandeInscription,
         createInternship, getInternships, getInternshipById, updateInternship, getInternshipsByStudentId,
-        deleteInternship
+        deleteInternship, getMatieres, getMatiereById, getSpecialites, getSpecialiteById,
+        getNotesWithDetails, getDevoirsWithDetails, getDemandesInscriptionWithSpecialite
       } from "./database"; 
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
-app.use(cors()); 
+app.use(cors());
 
 app.get("/api/liveness", (req, res) => {
     res.status(200).send("OK");
@@ -21,33 +22,33 @@ app.get("/api/liveness", (req, res) => {
 // Users
 
 // Get all users
-app.get('/users', (req, res) => {
-  const users = getUsers();
+app.get('/users', async (req, res) => {
+  const users = await getUsers();
   res.json(users);
 });
 
 // Get all students
-app.get('/students', (req, res) => {
-  const students = getStudents();
+app.get('/students', async (req, res) => {
+  const students = await getStudents();
   res.json(students);
 });
 
 // Get all teachers
-app.get('/teachers', (req, res) => {
-  const teachers = getTeachers();
+app.get('/teachers', async (req, res) => {
+  const teachers = await getTeachers();
   res.json(teachers);
 });
 
 // Get all admins
-app.get('/admins', (req, res) => {
-  const admins = getAdmins();
+app.get('/admins', async (req, res) => {
+  const admins = await getAdmins();
   res.json(admins);
 });
 
 // Get a user by ID
-app.get('/users/:id', (req, res) => {
+app.get('/users/:id', async (req, res) => {
   const userId = parseInt(req.params.id, 10);
-  const user = getUserById(userId);
+  const user = await getUserById(userId);
   if (user) {
     res.json(user);
   } else {
@@ -56,15 +57,15 @@ app.get('/users/:id', (req, res) => {
 });
 
 // Create a new user
-app.post('/users', (req, res) => {
-  const newUser = createUser(req.body);
+app.post('/users', async (req, res) => {
+  const newUser = await createUser(req.body);
   res.status(201).json(newUser);
 });
 
 // Update a user
-app.put('/users/:id', (req, res) => {
+app.put('/users/:id', async (req, res) => {
   const userId = parseInt(req.params.id, 10);
-  const updatedUser = updateUser(userId, req.body);
+  const updatedUser = await updateUser(userId, req.body);
   if (updatedUser) {
     res.json(updatedUser);
   } else {
@@ -73,10 +74,10 @@ app.put('/users/:id', (req, res) => {
 });
 
 // Delete a user
-app.delete('/users/:id', (req, res) => {
+app.delete('/users/:id', async (req, res) => {
   const userId = parseInt(req.params.id, 10);
-  const isDeleted = deleteUser(userId);
-  if (isDeleted) {
+  const isDeleted = await deleteUser(userId);
+  if (await isDeleted) {
     res.json({ message: 'User deleted successfully' });
   } else {
     res.status(404).json({ message: 'User not found' });
@@ -87,15 +88,15 @@ app.delete('/users/:id', (req, res) => {
 // Notes
 
 // Get all notes
-app.get('/notes', (req, res) => {
-  const notes = getNotes();
+app.get('/notes', async (req, res) => {
+  const notes = await getNotes();
   res.json(notes);
 });
 
 // Get a note by ID
-app.get('/notes/:id', (req, res) => {
+app.get('/notes/:id', async (req, res) => {
   const noteId = parseInt(req.params.id, 10);
-  const note = getNoteById(noteId);
+  const note = await getNoteById(noteId);
   if (note) {
     res.json(note);
   } else {
@@ -104,15 +105,15 @@ app.get('/notes/:id', (req, res) => {
 });
 
 // Create a new note
-app.post('/notes', (req, res) => {
-  const newNote = createNote(req.body);
+app.post('/notes', async (req, res) => {
+  const newNote = await createNote(req.body);
   res.status(201).json(newNote);
 });
 
 // Update a note
-app.put('/notes/:id', (req, res) => {
+app.put('/notes/:id', async (req, res) => {
   const noteId = parseInt(req.params.id, 10);
-  const updatedNote = updateNote(noteId, req.body);
+  const updatedNote = await updateNote(noteId, req.body);
   if (updatedNote) {
     res.json(updatedNote);
   } else {
@@ -121,41 +122,41 @@ app.put('/notes/:id', (req, res) => {
 });
 
 // Delete a note
-app.delete('/notes/:id', (req, res) => {
+app.delete('/notes/:id', async (req, res) => {
   const noteId = parseInt(req.params.id, 10);
-  const isDeleted = deleteNote(noteId);
-  if (isDeleted) {
+  const isDeleted = await deleteNote(noteId);
+  if (await isDeleted) {
     res.json({ message: 'Note deleted successfully' });
   } else {
     res.status(404).json({ message: 'Note not found' });
   }
 });
 // get notes by student id
-app.get('/notes/student/:student_id', (req, res) => {
+app.get('/notes/student/:student_id', async (req, res) => {
   const studentId = parseInt(req.params.student_id, 10);
-  const notes = getNotes().filter(note => note.id_student === studentId);
+  const notes = await (await getNotes()).filter((note: { id_student: number; }) => note.id_student === studentId);
   res.json(notes);
 });
 
 // get notes by teacher id
-app.get('/notes/teacher/:teacher_id', (req, res) => {
+app.get('/notes/teacher/:teacher_id', async (req, res) => {
   const teacherId = parseInt(req.params.teacher_id, 10);
-  const notes = getNotes().filter(note => note.id_teacher === teacherId);
+  const notes = await (await getNotes()).filter((note: { id_teacher: number; }) => note.id_teacher === teacherId);
   res.json(notes);
 });
-
+  
 
 // Devoirs
 // Get all devoirs
-app.get('/devoirs', (req, res) => {
-  const devoirs = getDevoirs();
+app.get('/devoirs', async (req, res) => {
+  const devoirs = await getDevoirs();
   res.json(devoirs);
 });
 
 // Get a devoir by ID
-app.get('/devoirs/:id', (req, res) => {
+app.get('/devoirs/:id', async (req, res) => {
   const devoirId = parseInt(req.params.id, 10);
-  const devoir = getDevoirById(devoirId);
+  const devoir = await getDevoirById(devoirId);
   if (devoir) {
     res.json(devoir);
   } else {
@@ -164,15 +165,15 @@ app.get('/devoirs/:id', (req, res) => {
 });
 
 // Create a new devoir
-app.post('/devoirs', (req, res) => {
-  const newDevoir = createDevoir(req.body);
+app.post('/devoirs', async (req, res) => {
+  const newDevoir = await createDevoir(req.body);
   res.status(201).json(newDevoir);
 });
 
 // Update a devoir
-app.put('/devoirs/:id', (req, res) => {
+app.put('/devoirs/:id', async (req, res) => {
   const devoirId = parseInt(req.params.id, 10);
-  const updatedDevoir = updateDevoir(devoirId, req.body);
+  const updatedDevoir = await updateDevoir(devoirId, req.body);
   if (updatedDevoir) {
     res.json(updatedDevoir);
   } else {
@@ -181,10 +182,10 @@ app.put('/devoirs/:id', (req, res) => {
 });
 
 // Delete a devoir
-app.delete('/devoirs/:id', (req, res) => {
+app.delete('/devoirs/:id', async (req, res) => {
   const devoirId = parseInt(req.params.id, 10);
-  const isDeleted = deleteDevoir(devoirId);
-  if (isDeleted) {
+  const isDeleted = await deleteDevoir(devoirId);
+  if (await isDeleted) {
     res.json({ message: 'Devoir deleted successfully' });
   } else {
     res.status(404).json({ message: 'Devoir not found' });
@@ -192,31 +193,31 @@ app.delete('/devoirs/:id', (req, res) => {
 });
 
 // get devoirs by student id
-app.get('/devoirs/student/:student_id', (req, res) => {
+app.get('/devoirs/student/:student_id', async (req, res) => {
   const studentId = parseInt(req.params.student_id, 10);
-  const devoirs = getDevoirs().filter(devoir => devoir.id_student === studentId);
+  const devoirs = await (await getDevoirs()).filter((devoir: { id_student: number; }) => devoir.id_student === studentId);
   res.json(devoirs);
 });
 
 // get devoirs by teacher id
-app.get('/devoirs/teacher/:teacher_id', (req, res) => {
+app.get('/devoirs/teacher/:teacher_id', async (req, res) => {
   const teacherId = parseInt(req.params.teacher_id, 10);
-  const devoirs = getDevoirs().filter(devoir => devoir.id_teacher === teacherId);
+  const devoirs = await (await getDevoirs()).filter((devoir: { id_teacher: number; }) => devoir.id_teacher === teacherId);
   res.json(devoirs);
 });
 
 // Demandes d'inscription
 
 // Get all demandes inscription
-app.get('/demandes-inscription', (req, res) => {
-  const demandesInscription = getDemandesInscription();
+app.get('/demandes-inscription', async (req, res) => {
+  const demandesInscription = await getDemandesInscription();
   res.json(demandesInscription);
 });
 
 // Get a demande inscription by ID
-app.get('/demandes-inscription/:id', (req, res) => {
+app.get('/demandes-inscription/:id', async (req, res) => {
   const demandeId = parseInt(req.params.id, 10);
-  const demande = getDemandeInscriptionById(demandeId);
+  const demande = await getDemandeInscriptionById(demandeId);
   if (demande) {
     res.json(demande);
   } else {
@@ -225,15 +226,15 @@ app.get('/demandes-inscription/:id', (req, res) => {
 });
 
 // Create a new demande inscription
-app.post('/demandes-inscription', (req, res) => {
-  const newDemande = createDemandeInscription(req.body);
+app.post('/demandes-inscription', async (req, res) => {
+  const newDemande = await createDemandeInscription(req.body);
   res.status(201).json(newDemande);
 });
 
 // Update a demande inscription
-app.put('/demandes-inscription/:id', (req, res) => {
+app.put('/demandes-inscription/:id', async (req, res) => {
   const demandeId = parseInt(req.params.id, 10);
-  const updatedDemande = updateDemandeInscription(demandeId, req.body);
+  const updatedDemande = await updateDemandeInscription(demandeId, req.body);
   if (updatedDemande) {
     res.json(updatedDemande);
   } else {
@@ -242,10 +243,10 @@ app.put('/demandes-inscription/:id', (req, res) => {
 });
 
 // Delete a demande inscription
-app.delete('/demandes-inscription/:id', (req, res) => {
+app.delete('/demandes-inscription/:id', async (req, res) => {
   const demandeId = parseInt(req.params.id, 10);
-  const isDeleted = deleteDemandeInscription(demandeId);
-  if (isDeleted) {
+  const isDeleted = await deleteDemandeInscription(demandeId);
+  if (await isDeleted) {
     res.json({ message: 'DemandeInscription deleted successfully' });
   } else {
     res.status(404).json({ message: 'DemandeInscription not found' });
@@ -255,15 +256,15 @@ app.delete('/demandes-inscription/:id', (req, res) => {
 
 // Internships
 // Get all internships
-app.get('/internships', (req, res) => {
-  const internships = getInternships();
+app.get('/internships', async (req, res) => {
+  const internships = await getInternships();
   res.json(internships);
 });
 
 // Get an internship by ID
-app.get('/internships/:id', (req, res) => {
+app.get('/internships/:id', async (req, res) => {
   const internshipId = parseInt(req.params.id, 10);
-  const internship = getInternshipById(internshipId);
+  const internship = await getInternshipById(internshipId);
   if (internship) {
     res.json(internship);
   } else {
@@ -272,23 +273,23 @@ app.get('/internships/:id', (req, res) => {
 });
 
 // Get internships by student ID
-app.get('/internships/student/:student_id', (req, res) => {
+app.get('/internships/student/:student_id', async (req, res) => {
   const studentId = parseInt(req.params.student_id, 10);
-  const internships = getInternshipsByStudentId(studentId);
+  const internships = await getInternshipsByStudentId(studentId);
   res.json(internships);
 });
 
 // Create a new internship
-app.post('/internships', (req, res) => {
-  const newInternship = createInternship(req.body);
+app.post('/internships', async (req, res) => {
+  const newInternship = await createInternship(req.body);
   res.status(201).json(newInternship);
 });
 
 // Update an internship
-app.put('/internships/:id', (req, res) => {
+app.put('/internships/:id', async (req, res) => {
   const internshipId = parseInt(req.params.id, 10);
   const userId = parseInt(req.body.user_id, 10); // Assuming user_id is passed in the request body
-  const updatedInternship = updateInternship(internshipId, userId, req.body);
+  const updatedInternship = await updateInternship(internshipId, userId, req.body);
   if (updatedInternship) {
     res.json(updatedInternship);
   } else {
@@ -297,14 +298,66 @@ app.put('/internships/:id', (req, res) => {
 });
 
 // Delete an internship
-app.delete('/internships/:id', (req, res) => {
+app.delete('/internships/:id', async (req, res) => {
   const internshipId = parseInt(req.params.id, 10);
-  const isDeleted = deleteInternship(internshipId);
-  if (isDeleted) {
+  const isDeleted = await deleteInternship(internshipId);
+  if (await isDeleted) {
     res.json({ message: 'Internship deleted successfully' });
   } else {
     res.status(404).json({ message: 'Internship not found' });
   }
+});
+
+// Matieres
+// Get all matieres
+app.get('/matieres', async (req, res) => {
+  const matieres = await getMatieres();
+  res.json(matieres);
+});
+
+// Get a matiere by ID
+app.get('/matieres/:id', async (req, res) => {
+  const matiereId = parseInt(req.params.id, 10);
+  const matiere = await getMatiereById(matiereId);
+  if (matiere) {
+    res.json(matiere);
+  } else {
+    res.status(404).json({ message: 'Matiere not found' });
+  }
+});
+
+// Specialites
+// Get all specialites
+app.get('/specialites', async (req, res) => {
+  const specialites = await getSpecialites();
+  res.json(specialites);
+});
+
+// Get a specialite by ID
+app.get('/specialites/:id', async (req, res) => {
+  const specialiteId = parseInt(req.params.id, 10);
+  const specialite = await getSpecialiteById(specialiteId);
+  if (specialite) {
+    res.json(specialite);
+  } else {
+    res.status(404).json({ message: 'Specialite not found' });
+  }
+});
+
+// Add new endpoints
+app.get('/notes/details', async (req, res) => {
+  const notes = await getNotesWithDetails();
+  res.json(notes);
+});
+
+app.get('/devoirs/details', async (req, res) => {
+  const devoirs = await getDevoirsWithDetails();
+  res.json(devoirs);
+});
+
+app.get('/demandes-inscription/details', async (req, res) => {
+  const demandes = await getDemandesInscriptionWithSpecialite();
+  res.json(demandes);
 });
 
 app.listen(PORT, () => {

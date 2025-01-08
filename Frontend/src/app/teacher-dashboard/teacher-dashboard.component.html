@@ -11,6 +11,19 @@
       required
     />
     <br />
+    <label for="matiere">Matière :</label>
+    <select
+      id="matiere"
+      [(ngModel)]="selectedMatiereId"
+      name="matiere"
+      required
+    >
+      <option value="-1">Sélectionnez une matière</option>
+      <option *ngFor="let matiere of matieres" [value]="matiere.matiere_id">
+        {{matiere.nom}}
+      </option>
+    </select>
+    <br />
     <label for="assignmentDescription">Description du devoir :</label>
     <textarea
       id="assignmentDescription"
@@ -25,21 +38,38 @@
   <h3>Devoirs Attribués</h3>
   <ul>
     <li *ngFor="let assignment of getAssignments()">
-      <strong>{{ assignment.subject }}</strong>:
+      <strong>{{ getMatiereNameById(assignment.id_matiere) }}</strong>:
       <span>{{ assignment.content }}</span>
     </li>
   </ul>
 
   <h3>Ajouter une Note</h3>
   <form (ngSubmit)="addGrade()">
-    <label for="studentId">ID de l'étudiant :</label>
-    <input
+    <label for="studentId">Étudiant :</label>
+    <select
       id="studentId"
-      type="number"
       [(ngModel)]="newStudentId"
       name="studentId"
       required
-    />
+    >
+      <option value="-1">Sélectionnez un étudiant</option>
+      <option *ngFor="let student of students" [value]="student.user_id">
+        {{getStudentFullName(student)}}
+      </option>
+    </select>
+    <br />
+    <label for="matiere">Matière :</label>
+    <select
+      id="matiere"
+      [(ngModel)]="selectedMatiereId"
+      name="matiere"
+      required
+    >
+      <option value="-1">Sélectionnez une matière</option>
+      <option *ngFor="let matiere of matieres" [value]="matiere.matiere_id">
+        {{matiere.nom}}
+      </option>
+    </select>
     <br />
     <label for="assignmentSubject">Sujet :</label>
     <input
@@ -61,13 +91,12 @@
     <button type="submit">Ajouter la note</button>
   </form>
 
-  <h3>Notes des Étudiants</h3>
+  <h3>Notes des étudiants</h3>
   <ul>
-    <li *ngFor="let student of getNotes()">
-      <strong>Student {{ student.id_student }}</strong>:
-      <!-- <strong>Student {{ getStudentName(student.id_student) }}</strong>: -->
-      <span>{{ student.valeur }}/20 in </span>
-      <span>{{ student.name }}</span>
+    <li *ngFor="let note of getNotes()">
+      <strong>{{ getStudentNameForNote(note.id_student) }}</strong>:
+      <span>{{ note.valeur }}/20 in {{ getMatiereNameById(note.id_matiere) }}</span>
+      <span>{{ note.name }}</span>
     </li>
   </ul>
 </div>
