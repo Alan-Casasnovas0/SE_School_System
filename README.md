@@ -38,20 +38,27 @@ The website provides different user experiences for **Admins**, **Teachers**, an
 ### 2. **Login/Connection Page**
 - Role-specific login for **Admins**, **Teachers**, and **Students**.
 - Ensures a secure access using role authentication.
+![Login Page](https://github.com/Alan-Casasnovas0/SE_School_System/blob/Front-%26-Back/images/login.png)
 
 ### 3. **Admin Page**
 - View all enrolled students.
 - Accept or reject student applications.
+![Admin Dashboard](https://github.com/Alan-Casasnovas0/SE_School_System/blob/Front-%26-Back/images/manager.png)
+![Admin Dashboard](https://github.com/Alan-Casasnovas0/SE_School_System/blob/Front-%26-Back/images/manager2.png)
+![Admin Dashboard](https://github.com/Alan-Casasnovas0/SE_School_System/blob/Front-%26-Back/images/manager3.png)
 
 ### 4. **Teacher Page**
 - Assign homework to specific subjects.
 - Enter and update grades for students.
+![Teacher Dashboard](https://github.com/Alan-Casasnovas0/SE_School_System/blob/Front-%26-Back/images/teacher1.png)
+![Teacher Dashboard 2](https://github.com/Alan-Casasnovas0/SE_School_System/blob/Front-%26-Back/images/teacher2.png)
 
 ### 5. **Student Page**
 - **The student needs to be enrolled to access this page**:
   - View assigned homework.
   - Check grades for completed courses.
- 
+![Student Dashboard](https://github.com/Alan-Casasnovas0/SE_School_System/blob/Front-%26-Back/images/student.png)
+
 
 ## Task distribution
 - **Frontend**: Luca, Alan and Noรซmie worked all 3 on the frontend, they created the pages and thought out the style of the website
