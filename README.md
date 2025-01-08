@@ -1,5 +1,8 @@
 # School Management Website
 
+link to the github repository : https://github.com/Alan-Casasnovas0/SE_School_System/tree/Front-%26-Back
+(Be careful, the project is in the `Front-&-Back` branch)
+
 **CDOF1**
 
 - **Noémie MAZEPA** 
